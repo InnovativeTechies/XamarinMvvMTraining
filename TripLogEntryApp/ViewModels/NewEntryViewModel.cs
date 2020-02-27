@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using TripLogEntryApp.Interfaces;
 using TripLogEntryApp.Models;
 using Xamarin.Forms;
 
@@ -6,6 +8,7 @@ namespace TripLogEntryApp.ViewModels
 {
     public class NewEntryViewModel:BaseValidationViewModel
     {
+        readonly ILocationService _locationService;
         string _title;
         public string Title
         {
@@ -73,7 +76,8 @@ namespace TripLogEntryApp.ViewModels
         }
 
         Command _saveCommand;
-        public Command SaveCommand => _saveCommand ?? (_saveCommand = new Command(Save,CanSave));
+        public Command SaveCommand =>
+        _saveCommand ?? (_saveCommand = new Command(async () => await Save(), CanSave));
 
         private bool CanSave(object arg)
         {
@@ -82,24 +86,56 @@ namespace TripLogEntryApp.ViewModels
 
         private bool CanSave() => !string.IsNullOrWhiteSpace(Title);
 
-        private void Save(object obj)
+        private async Task Save()
         {
-            var newItem = new TripLogEntry
+            if (IsBusy) return;
+            IsBusy = true;
+            try
             {
-                Title = Title,
-                Latitude = Latitude,
-                Longitude = Longitude,
-                Date = Date,
-                Rating = Rating,
-                Notes = Notes
-            };
+                var newItem = new TripLogEntry
+                {
+                    Title = Title,
+                    Latitude = Latitude,
+                    Longitude = Longitude,
+                    Date = Date,
+                    Rating = Rating,
+                    Notes = Notes
+                };
+                await Task.Delay(3000);
+                await NavService.GoBack();
+            }
+            catch (Exception ex)
+            {
 
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+            
         }
 
-        public NewEntryViewModel()
+        public NewEntryViewModel(INavService navService,ILocationService locationService) : base(navService)
         {
             Date = DateTime.Today;
             Rating = 1;
+            _locationService = locationService;
+        }
+
+        public override async void Init()
+        {
+            try
+            {
+                    
+                var coords = await _locationService.GetGeoCoordinatesAsync();
+                Latitude = coords.Latitude;
+                Longitude = coords.Longitude;
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }

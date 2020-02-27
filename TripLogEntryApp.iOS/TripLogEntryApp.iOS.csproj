@@ -69,6 +69,8 @@
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\LocationService.cs" />
+    <Compile Include="Modules\TripLogPlatformModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -129,6 +131,9 @@
     <PackageReference Include="Xamarin.Forms.Maps">
       <Version>4.5.0.356</Version>
     </PackageReference>
+    <PackageReference Include="Ninject">
+      <Version>3.3.4</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
@@ -136,5 +141,9 @@
       <Project>{2CA63FC7-F66C-47A5-B26B-A5080C8E30CD}</Project>
       <Name>TripLogEntryApp</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
+    <Folder Include="Modules\" />
   </ItemGroup>
 </Project>

@@ -2,19 +2,27 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="TripLog"
-             
+             xmlns:vm="clr-namespace:TripLogEntryApp.ViewModels;assembly=TripLogEntryApp"
              x:Class="TripLogEntryApp.Views.MainPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="New" Clicked="New_Clicked"/>
+        <ToolbarItem Text="New" Command="{Binding NewCommand}"/>
     </ContentPage.ToolbarItems>
              <ContentPage.Content>
+                 <RefreshView IsRefreshing="{Binding IsBusy,Mode=OneWay}" Command="{Binding RefreshCommand}">
 
-                 <CollectionView x:Name="trips"
-                                 SelectionMode="Single" ItemsSource="{Binding LogEntries}" FlowDirection="LeftToRight" SelectionChanged="trips_SelectionChanged">
+                
+                     <CollectionView x:Name="trips"
+                                 SelectionMode="Single" ItemsSource="{Binding LogEntries}" FlowDirection="LeftToRight">
 
                      <CollectionView.ItemTemplate>
                          <DataTemplate>
                              <Grid Padding="10">
+                                 <Grid.GestureRecognizers>
+                                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainViewModel}}, Path=ViewCommand}"
+                                                      CommandParameter="{Binding}" >
+
+                                     </TapGestureRecognizer>
+                                 </Grid.GestureRecognizers>
                                  <Grid.ColumnDefinitions>
                                      <ColumnDefinition Width="1*"/>
                                      <ColumnDefinition Width="3*"/>
@@ -37,7 +45,7 @@
                          </DataTemplate>
                      </CollectionView.ItemTemplate>
                      </CollectionView>
-
+                 </RefreshView>
              </ContentPage.Content>
 
 </ContentPage>

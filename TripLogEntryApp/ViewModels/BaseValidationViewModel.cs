@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using TripLogEntryApp.Interfaces;
 
 namespace TripLogEntryApp.ViewModels
 {
     public class BaseValidationViewModel:BaseViewModel,INotifyDataErrorInfo
     {
         readonly IDictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();
-        public BaseValidationViewModel()
+        public BaseValidationViewModel(INavService navService):base(navService)
         {
         }
 

@@ -2,12 +2,16 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="New Entry"
+             xmlns:converters="clr-namespace:TripLogEntryApp.Converters;assembly=TripLogEntryApp"
              x:Class="TripLogEntryApp.Views.NewEntryPage">
+    <ContentPage.Resources>
+        <converters:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
+    </ContentPage.Resources>
         <ContentPage.ToolbarItems>
         <ToolbarItem Text="Save" Command="{Binding SaveCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <TableView Intent="Form">
+        <TableView Intent="Form" IsVisible="{Binding IsBusy,Converter={StaticResource ReverseBooleanConverter}}">
             <TableView.Root>
                 <TableSection>
                     <EntryCell Label="Title" x:Name="title" Text="{Binding Title }"/>
@@ -20,5 +24,6 @@
                 </TableSection>
             </TableView.Root>
         </TableView>
+
     </ContentPage.Content>
 </ContentPage>
