@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="TripLog"
+             
              x:Class="TripLogEntryApp.Views.MainPage">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="New" Clicked="New_Clicked"/>
@@ -9,7 +10,7 @@
              <ContentPage.Content>
 
                  <CollectionView x:Name="trips"
-                                 SelectionMode="Single" FlowDirection="LeftToRight" SelectionChanged="trips_SelectionChanged">
+                                 SelectionMode="Single" ItemsSource="{Binding LogEntries}" FlowDirection="LeftToRight" SelectionChanged="trips_SelectionChanged">
 
                      <CollectionView.ItemTemplate>
                          <DataTemplate>
